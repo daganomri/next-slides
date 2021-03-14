@@ -5,7 +5,7 @@ import { getSlidesFromDeck } from "../../lib/Deck";
 import useCurrentSlide from "../../hooks/useCurrentSlide";
 import { Counter, MDXComponents } from "../../components";
 import React from "react";
-import { Slide } from "../../Layout";
+import { Slide } from "../../layout";
 import { getSlidePaths } from "../../lib/Deck";
 import { useRouter } from "next/router";
 import { InferGetStaticPropsType } from "next";

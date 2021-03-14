@@ -1,6 +1,6 @@
 import { getDeckPaths } from "../lib/Deck";
 import Link from "next/link";
-import { Grid } from "../Layout";
+import { Grid } from "../layout";
 import { Fader } from "../components";
 
 const Index = ({ decks }: { decks: string[] }) => {
