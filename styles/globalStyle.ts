@@ -20,6 +20,7 @@ const GlobalStyle = createGlobalStyle`
 
   * {
     box-sizing: border-box;
+    min-width: 0px;
   }
 
   body,
