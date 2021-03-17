@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         name={siteConfig.name}
         title={siteConfig.title}
         date={siteConfig.date}
-        url={siteConfig.author.url}
+        url={siteConfig.author.twitter_url}
       />
       <Component {...pageProps} />
     </>

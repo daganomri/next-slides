@@ -13,5 +13,6 @@ export type DeckData = Readonly<
     title: string;
     style: CSSStyleSheet;
     showCounter: boolean;
+    date: string;
   }>
 >;

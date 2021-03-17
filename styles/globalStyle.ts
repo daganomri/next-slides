@@ -43,17 +43,16 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #slide {
-    /* display: flex; */
     overflow: hidden;
     position: absolute;
-    /* justify-content: center; */
-    /* align-items: center; */
 
     width: 100vw;
     height: 100vh;
     padding: 1rem;
 
-    /* text-align: center; */
+    background-size: cover;
+
+    text-align: center;
 
     -webkit-overflow-scrolling: touch;
   }
@@ -136,11 +135,26 @@ const GlobalStyle = createGlobalStyle`
 
   pre {
     max-width: calc(100vw - 2rem);
+    font-size: 0.75rem !important; 
+
+    overflow-x: hidden;
+    margin-top: 0;
+
+    text-align: left;
+
+    color: var(--accent);
   }
 
-  /* code {
+  code {
     font-family: menlo, monospace;
-  } */
+    overflow-x: auto;
+  }
+
+
+  code > span:not([class]):last-of-type
+   {
+    display: none !important;
+  }
 
   a:hover {
     color: var(--accent);

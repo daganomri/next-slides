@@ -18,6 +18,13 @@ export const getDeckPaths = () => {
   return paths;
 };
 
+export const getDeckMetadata = (deckName: string) => {
+  const filename = path.join("decks", `${deckName}.mdx`);
+  const deck = fs.readFileSync(filename, "utf-8");
+  const { data } = matter(deck);
+  return data;
+};
+
 export const getSlidePaths = () => {
   const postsDirectory = path.join(process.cwd(), "decks");
   const mdxFiles = fs.readdirSync(postsDirectory);

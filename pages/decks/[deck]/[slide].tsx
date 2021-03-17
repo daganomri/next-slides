@@ -1,16 +1,17 @@
 import Head from "next/head";
-import siteConfig from "../../site.config";
+import siteConfig from "../../../site.config";
 import hydrate from "next-mdx-remote/hydrate";
-import { getSlidesFromDeck } from "../../lib/Deck";
-import useCurrentSlide from "../../hooks/useCurrentSlide";
-import { Counter, MDXComponents } from "../../components";
+import { getSlidesFromDeck } from "../../../lib/Deck";
+import useCurrentSlide from "../../../hooks/useCurrentSlide";
+import { Counter, MDXComponents } from "../../../components";
 import React from "react";
-import { Slide } from "../../layout";
-import { getSlidePaths } from "../../lib/Deck";
+import { Slide } from "../../../layout";
+import { getSlidePaths } from "../../../lib/Deck";
 import { useRouter } from "next/router";
 import { InferGetStaticPropsType } from "next";
-import { SlideData } from "../../types";
-import Pagination from "../../components/Pagination";
+import { SlideData } from "../../../types";
+import Pagination from "../../../components/Pagination";
+import useDeckMetadata from "../../../global/deckMetadata";
 
 const Deck = ({
   currentDeck,
@@ -20,6 +21,16 @@ const Deck = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [currentSlide, setCurrentSlide] = useCurrentSlide(totalSlides);
   const [direction, setDirection] = React.useState<1 | 0 | -1>(0);
+  const [deckTitle, showCounter] = useDeckMetadata((state) => [
+    state.title,
+    state.showCounter,
+  ]);
+  const setDeckMetadata = useDeckMetadata((state) => state.setDeckMetadata);
+
+  React.useEffect(() => {
+    if (deckData == null || showCounter == null) setDeckMetadata(deckData);
+  }, []);
+
   const router = useRouter();
 
   const paginate = (newDirection: 1 | 0 | -1) => {
@@ -47,7 +58,6 @@ const Deck = ({
   const hydratedSlide = hydrate(slide, { components: MDXComponents });
 
   const { title } = slideData;
-  const { title: deckTitle, showCounter = true } = deckData;
 
   return (
     <>
@@ -64,7 +74,6 @@ const Deck = ({
           currentSlide,
           slide: hydratedSlide,
           slideData,
-          deckData,
         }}
       />
       <Pagination

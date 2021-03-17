@@ -2,6 +2,7 @@ import { AnimatePresence, motion, MotionStyle, Variants } from "framer-motion";
 import React from "react";
 import { Grid } from ".";
 import { Fader } from "../components";
+import useDeckMetadata from "../global/deckMetadata";
 import { DeckData, SlideData, TODO } from "../types";
 
 const variants: Variants = {
@@ -25,27 +26,6 @@ const variants: Variants = {
   },
 };
 
-const variants2: Variants = {
-  enter: (direction: number) => {
-    return {
-      y: direction > 0 ? 1000 : -1000,
-      opacity: 0,
-    };
-  },
-  center: {
-    zIndex: 1,
-    y: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => {
-    return {
-      zIndex: 0,
-      y: direction < 0 ? 1000 : -1000,
-      opacity: 0,
-    };
-  },
-};
-
 /**
  * Experimenting with distilling swipe offset and velocity into a single variable, so the
  * less distance a user has swiped, the more velocity they need to register as a swipe.
@@ -62,7 +42,6 @@ type Props = {
   currentSlide: number;
   paginate: (newDirection: 1 | 0 | -1) => void;
   slideData: SlideData;
-  deckData?: DeckData;
   slide: React.ReactNode;
 };
 
@@ -71,12 +50,12 @@ const Slide: React.FC<Props> = ({
   currentSlide,
   paginate,
   slideData,
-  deckData,
   slide,
 }) => {
   const { rows, columns, style } = slideData;
+  const deckStyle = useDeckMetadata((state) => state.style);
   return (
-    <Fader style={deckData.style ?? {}}>
+    <Fader style={{ backgroundSize: "cover", ...deckStyle }}>
       <AnimatePresence initial={false} custom={direction}>
         <motion.main
           id="slide"

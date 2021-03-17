@@ -1,9 +1,14 @@
 import React from "react";
 import Link from "next/link";
+import useDeckMetadata from "../global/deckMetadata";
 
 type HeaderProps = { name: string; title: string; date: string; url: string };
 
-export default function Header({ name, title, date, url }: HeaderProps) {
+export default function Header({ name, title, url }: HeaderProps) {
+  const [date, deckTitle] = useDeckMetadata((state) => [
+    state.date,
+    state.title,
+  ]);
   return (
     <header style={{ zIndex: 1000 }}>
       <div>
@@ -12,10 +17,10 @@ export default function Header({ name, title, date, url }: HeaderProps) {
         </a>{" "}
         —{" "}
         <Link href="/">
-          <a>{title}</a>
+          <a>{deckTitle ?? title}</a>
         </Link>
       </div>
-      <time>{date}</time>
+      {date && <time>{date}</time>}
     </header>
   );
 }

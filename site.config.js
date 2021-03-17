@@ -1,9 +1,8 @@
-export const siteConfig = {
+const siteConfig = {
   name: `@daganomri`,
   title: `NextJS Slides`,
-  date: `March 12, 2021`,
   author: {
-    url: `https://twitter.com/daganomri`,
+    twitter_url: `https://twitter.com/daganomri`,
   },
 };
 
