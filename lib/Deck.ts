@@ -1,15 +1,14 @@
-import path from "path";
 import fs from "fs";
-import renderToString from "next-mdx-remote/render-to-string";
-import { MDXComponents } from "../components";
 import matter from "gray-matter";
-import { DeckData, SlideData } from "../types";
-// import Error from "../decks/Error.json";
+import renderToString from "next-mdx-remote/render-to-string";
+import path from "path";
+
+import { MDXComponents } from "../components";
+import { DeckMetadata, SlideMetadata } from "../types";
 
 export const getDeckPaths = () => {
   const postsDirectory = path.join(process.cwd(), "decks");
   const mdxFiles = fs.readdirSync(postsDirectory);
-  // Loop through all post files and create array of slugs (to create links)
   const paths = mdxFiles.map((filename) => ({
     params: {
       deck: filename.replace(".mdx", ""),
@@ -28,7 +27,6 @@ export const getDeckMetadata = (deckName: string) => {
 export const getSlidePaths = () => {
   const postsDirectory = path.join(process.cwd(), "decks");
   const mdxFiles = fs.readdirSync(postsDirectory);
-  // Loop through all post files and create array of slugs (to create links)
   const paths = mdxFiles.flatMap((filename) => {
     const deck = fs.readFileSync(path.join("decks", filename), "utf-8");
     const { content: deckContent } = matter(deck);
@@ -46,10 +44,10 @@ export const getSlidePaths = () => {
 export const getSlidesFromDeck = async (deckName: string) => {
   const filename = path.join("decks", `${deckName}.mdx`);
   const deck = fs.readFileSync(filename, "utf-8");
-  const { content: deckContent, data: deckData } = matter(deck);
+  const { content: deckContent, data: deckMetadata } = matter(deck);
   const slides = deckContent.split("---\n");
   const renderedSlides = slides.map(async (slide) => {
-    const { content, data }: { content: string; data: SlideData } = matter(
+    const { content, data }: { content: string; data: SlideMetadata } = matter(
       slide.trim(),
       {
         delimiters: "///",
@@ -61,7 +59,7 @@ export const getSlidesFromDeck = async (deckName: string) => {
     });
   });
   return {
-    deckData: deckData as DeckData,
+    deckMetadata: deckMetadata as DeckMetadata,
     slides: (await Promise.allSettled(renderedSlides)).map((slide) => {
       if (slide.status === "rejected") {
         throw new Error(slide.reason);

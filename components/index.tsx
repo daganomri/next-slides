@@ -1,15 +1,16 @@
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { MdxRemote } from "next-mdx-remote/types";
+
+import * as LayoutComponents from "@/layout";
+
 import Button from "./Button";
-import Header from "./Header";
-import Fader from "./Fader";
-import Counter from "./Counter";
 import CodeBlock from "./CodeBlock";
-import { motion, AnimatePresence, AnimateSharedLayout } from "framer-motion";
+import Counter from "./Counter";
+import Fader from "./Fader";
+import Header from "./Header";
 
 const MotionComponents = { motion, AnimatePresence, AnimateSharedLayout };
 export { Button, Header, Fader, Counter, CodeBlock };
-
-import * as LayoutComponents from "../layout";
-import { MdxRemote } from "next-mdx-remote/types";
 
 export const MDXComponents: MdxRemote.Components = {
   Button,

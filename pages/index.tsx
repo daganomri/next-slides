@@ -1,15 +1,17 @@
-import { getDeckPaths } from "../lib/Deck";
 import Link from "next/link";
-import { Grid } from "../layout";
-import { Fader } from "../components";
-import useDeckMetadata from "../global/deckMetadata";
 import React from "react";
 
+import { Fader } from "@/components";
+import useDeckMetadata from "@/global/useDeckMetadata";
+import Grid from "@/layout/Grid";
+import { getDeckPaths } from "@/lib/Deck";
+
 const Index = ({ decks }: { decks: string[] }) => {
-  const setDeckMetadata = useDeckMetadata((state) => state.setDeckMetadata);
+  const resetDeckMetadata = useDeckMetadata((state) => state.resetDeckMetadata);
   React.useEffect(() => {
-    setDeckMetadata({});
-  }, []);
+    resetDeckMetadata();
+  });
+
   return (
     <Fader>
       <main id="slide">
@@ -18,7 +20,7 @@ const Index = ({ decks }: { decks: string[] }) => {
           <ul>
             {decks.map((deck) => (
               <li key={deck}>
-                <Link href={`/decks/${deck}`}>
+                <Link href={`/decks/${deck}/1`}>
                   <a>{deck}</a>
                 </Link>
               </li>

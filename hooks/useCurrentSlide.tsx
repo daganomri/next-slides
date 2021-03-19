@@ -1,13 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 
-const getPath = (path: string, slide: number) => {
-  const basePath = path.split("/").slice(0, -1).join("/");
-  return `${basePath}/${slide}`;
-};
-
-const clamp = (min: number, val: number, max: number) =>
-  Math.max(min, Math.min(val, max));
+import { clamp, getPath } from "@/lib/Utils";
 
 const useCurrentSlide = (totalSlides: number) => {
   const router = useRouter();
@@ -22,7 +16,7 @@ const useCurrentSlide = (totalSlides: number) => {
       router.prefetch(nextPath);
       router.prefetch(prevPath);
     },
-    [router]
+    [router, totalSlides]
   );
 
   return [currentSlide, setCurrentSlide] as const;

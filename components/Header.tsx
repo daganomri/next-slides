@@ -1,8 +1,9 @@
-import React from "react";
 import Link from "next/link";
-import useDeckMetadata from "../global/deckMetadata";
+import React from "react";
 
-type HeaderProps = { name: string; title: string; date: string; url: string };
+import useDeckMetadata from "@/global/useDeckMetadata";
+
+type HeaderProps = { name: string; title: string; url: string };
 
 export default function Header({ name, title, url }: HeaderProps) {
   const [date, deckTitle] = useDeckMetadata((state) => [

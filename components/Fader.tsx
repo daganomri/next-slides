@@ -1,21 +1,23 @@
 import { motion } from "framer-motion";
-import React from "react";
+import React, { CSSProperties } from "react";
+import styled from "styled-components";
 
-const Fader: React.FC<{ style?: any }> = ({ children, style }) => {
+const StyledMotionDiv = motion(styled.div`
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+`);
+
+const Fader: React.FC<{ style?: CSSProperties }> = ({ children, style }) => {
   return (
-    <motion.div
+    <StyledMotionDiv
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.1, duration: 0.3 }}
-      style={{
-        width: "100vw",
-        height: "100vh",
-        position: "relative",
-        ...style,
-      }}
+      style={style}
     >
       {children}
-    </motion.div>
+    </StyledMotionDiv>
   );
 };
 

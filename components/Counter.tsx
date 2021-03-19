@@ -2,8 +2,11 @@ import { AnimatePresence, motion, Variants } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 
+import { useDeckState } from "@/global/DeckStateProvider";
+import { Direction } from "@/types";
+
 const counterVariants: Variants = {
-  enter: (direction: number) => {
+  enter: (direction: Direction) => {
     return {
       y: direction > 0 ? -10 : 10,
       opacity: 0,
@@ -13,7 +16,7 @@ const counterVariants: Variants = {
     y: 0,
     opacity: 1,
   },
-  exit: (direction: number) => {
+  exit: (direction: Direction) => {
     return {
       y: direction < 0 ? -10 : 10,
       opacity: 0,
@@ -21,11 +24,8 @@ const counterVariants: Variants = {
   },
 };
 
-const Counter: React.FC<{
-  direction: 1 | 0 | -1;
-  currentSlide: number;
-  totalSlides: number;
-}> = ({ direction, currentSlide, totalSlides }) => {
+const Counter = () => {
+  const { direction, currentSlide, totalSlides } = useDeckState();
   return (
     <AnimatePresence exitBeforeEnter initial={false} custom={direction}>
       <CounterWrapper>

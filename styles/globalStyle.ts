@@ -1,5 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
+import { camelVariablesToStyledKebab } from "@/lib/Utils";
+import siteConfig from "@/site.config";
+
+const { cssVariables } = siteConfig;
+
 const GlobalStyle = createGlobalStyle`
   :root {
     --bg: #050505;
@@ -10,6 +15,7 @@ const GlobalStyle = createGlobalStyle`
     --code: 1rem;
     --heading-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";;
     --heading-font-weight: 800;
+    ${camelVariablesToStyledKebab(cssVariables)}
   }
 
   @media (max-width: 600px) {

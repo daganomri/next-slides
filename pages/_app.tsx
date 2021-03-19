@@ -1,8 +1,9 @@
 import { AppProps } from "next/app";
-import siteConfig from "../site.config";
-import GlobalStyle from "../styles/globalStyle";
-import Header from "../components/Header";
 import Head from "next/head";
+
+import Header from "@/components/Header";
+import siteConfig from "@/site.config";
+import GlobalStyle from "@/styles/globalStyle";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,7 +18,6 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Header
         name={siteConfig.name}
         title={siteConfig.title}
-        date={siteConfig.date}
         url={siteConfig.author.twitter_url}
       />
       <Component {...pageProps} />

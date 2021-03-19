@@ -1,63 +1,60 @@
-import Head from "next/head";
-import siteConfig from "../../../site.config";
-import hydrate from "next-mdx-remote/hydrate";
-import { getSlidesFromDeck } from "../../../lib/Deck";
-import useCurrentSlide from "../../../hooks/useCurrentSlide";
-import { Counter, MDXComponents } from "../../../components";
-import React from "react";
-import { Slide } from "../../../layout";
-import { getSlidePaths } from "../../../lib/Deck";
-import { useRouter } from "next/router";
 import { InferGetStaticPropsType } from "next";
-import { SlideData } from "../../../types";
-import Pagination from "../../../components/Pagination";
-import useDeckMetadata from "../../../global/deckMetadata";
+import Head from "next/head";
+import hydrate from "next-mdx-remote/hydrate";
+import React from "react";
+
+import { MDXComponents } from "@/components";
+import Counter from "@/components/Counter";
+import Pagination from "@/components/Pagination";
+import { DeckStateProvider } from "@/global/DeckStateProvider";
+import useDeckMetadata from "@/global/useDeckMetadata";
+import useCurrentSlide from "@/hooks/useCurrentSlide";
+import Slide from "@/layout/Slide";
+import { getSlidePaths, getSlidesFromDeck } from "@/lib/Deck";
+import siteConfig from "@/site.config";
+import { Direction, SlideMetadata } from "@/types";
 
 const Deck = ({
   currentDeck,
   slide,
   totalSlides,
-  deckData,
+  deckMetadata,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [currentSlide, setCurrentSlide] = useCurrentSlide(totalSlides);
-  const [direction, setDirection] = React.useState<1 | 0 | -1>(0);
-  const [deckTitle, showCounter] = useDeckMetadata((state) => [
-    state.title,
-    state.showCounter,
-  ]);
+  const [direction, setDirection] = React.useState<Direction>(1);
+  const [
+    deckTitle,
+    showCounter = true,
+  ] = useDeckMetadata(({ title, showCounter }) => [title, showCounter]);
   const setDeckMetadata = useDeckMetadata((state) => state.setDeckMetadata);
 
   React.useEffect(() => {
-    if (deckData == null || showCounter == null) setDeckMetadata(deckData);
+    setDeckMetadata(deckMetadata);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const router = useRouter();
+  const jumpToSlide = React.useCallback(
+    (slideIndex: number) => {
+      setCurrentSlide(Math.max(Math.min(totalSlides, slideIndex), 1));
+      setDirection(
+        ((slideIndex - currentSlide) /
+          Math.abs(slideIndex - currentSlide)) as Direction
+      );
+    },
+    [currentSlide, setCurrentSlide, totalSlides]
+  );
 
-  const paginate = (newDirection: 1 | 0 | -1) => {
-    setCurrentSlide(currentSlide + newDirection);
-    setDirection(newDirection);
-  };
+  const paginate = React.useCallback(
+    (direction: Direction) => {
+      jumpToSlide(currentSlide + direction);
+    },
+    [currentSlide, jumpToSlide]
+  );
 
-  const jumpToSlide = (slideIndex: number) => {
-    setCurrentSlide(Math.max(Math.min(totalSlides, slideIndex), 1));
-    setDirection(
-      ((slideIndex - currentSlide) / Math.abs(slideIndex - currentSlide)) as
-        | 1
-        | -1
-    );
-  };
-
-  React.useEffect(() => {
-    router.prefetch(
-      `/${currentDeck}/${Math.min(totalSlides, currentSlide + 1)}`
-    );
-    router.prefetch(`/${currentDeck}/${Math.max(1, currentSlide - 1)}`);
-  }, [currentSlide]);
-
-  const slideData: SlideData = slide?.scope?.data ?? {};
+  const slideMetadata: SlideMetadata = slide?.scope?.data ?? {};
   const hydratedSlide = hydrate(slide, { components: MDXComponents });
 
-  const { title } = slideData;
+  const { title } = slideMetadata;
 
   return (
     <>
@@ -67,33 +64,24 @@ const Deck = ({
           {title ? " - " + title : " #" + currentSlide}
         </title>
       </Head>
-      <Slide
-        {...{
-          direction,
-          paginate,
-          currentSlide,
-          slide: hydratedSlide,
-          slideData,
-        }}
-      />
-      <Pagination
-        totalSlides={totalSlides}
-        currentSlide={currentSlide}
-        jumpToSlide={jumpToSlide}
-      />
-      {showCounter && (
-        <Counter
-          direction={direction}
-          currentSlide={currentSlide}
-          totalSlides={totalSlides}
+      <DeckStateProvider
+        value={{ currentSlide, direction, totalSlides, jumpToSlide, paginate }}
+      >
+        <Slide
+          {...{
+            slide: hydratedSlide,
+            slideMetadata,
+          }}
         />
-      )}
+        <Pagination />
+        {showCounter && <Counter />}
+      </DeckStateProvider>
     </>
   );
 };
 
 export async function getStaticProps({ params }) {
-  const { slides, deckData } = await getSlidesFromDeck(params.deck);
+  const { slides, deckMetadata } = await getSlidesFromDeck(params.deck);
   const slide = slides[params.slide - 1];
   const totalSlides = slides.length;
 
@@ -101,7 +89,7 @@ export async function getStaticProps({ params }) {
     props: {
       slide,
       totalSlides,
-      deckData,
+      deckMetadata,
       currentDeck: params.deck,
     },
   };

@@ -26,6 +26,4 @@ const CodeBlock: React.FC<Props> = ({
   );
 };
 
-console.log(themes);
-
 export default CodeBlock;
