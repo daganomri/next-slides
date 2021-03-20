@@ -1,21 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import { Direction } from "node:readline";
 import React from "react";
 import styled from "styled-components";
 
-import { useDeckState } from "@/global/DeckStateProvider";
 import useKeyPress from "@/hooks/useKeyPress";
-
-const getUseKeyToJump = (jumpToSlide: (index: number) => void) => (
-  keys: string | string[],
-  index: number
-) => {
-  const keysArray = Array.isArray(keys) ? keys : [keys];
-  const mappedKeys = keysArray.map((key) => useKeyPress(key));
-
-  React.useEffect(() => {
-    if (mappedKeys.some(Boolean)) jumpToSlide(index);
-  }, [mappedKeys, index]);
-};
 
 const PaginationWrapper = styled.div`
   display: flex;
@@ -35,35 +24,61 @@ const DotWrapper = styled.div`
   cursor: pointer;
 `;
 
-const Dot = motion(styled.div`
+const styledDot = styled.div`
   width: 15px;
   height: 15px;
   box-shadow: 0 0 10px 4px rgb(0 0 0 / 0.5);
   background-color: rgb(100 100 100);
   border-radius: 50%;
   position: absolute;
-`);
-const ActiveDot = motion(styled.div`
-  width: 15px;
-  height: 15px;
-  box-shadow: 0 0 10px 4px rgb(0 0 0 / 0.5);
+`;
+
+const Dot = motion(styledDot);
+
+const styledActiveDot = styled(styledDot)`
   background-color: white;
-  border-radius: 50%;
-  position: absolute;
   z-index: 1500;
-`);
+`;
 
-const Pagination = () => {
-  const { totalSlides, currentSlide, jumpToSlide } = useDeckState();
+const ActiveDot = motion(styledActiveDot);
+
+type Props = {
+  totalSlides: number;
+  currentSlide: number;
+  paginate: (direction: Direction) => void;
+  jumpToSlide: (slide: number) => void;
+};
+
+const Pagination = ({
+  totalSlides,
+  currentSlide,
+  paginate,
+  jumpToSlide,
+}: Props) => {
   const dotArray = [...Array(totalSlides + 1).keys()].slice(1);
-  const useKeyToJump = React.useMemo(() => getUseKeyToJump(jumpToSlide), [
-    jumpToSlide,
-  ]);
 
-  useKeyToJump(["ArrowRight", "ArrowDown"], currentSlide + 1);
-  useKeyToJump(["ArrowLeft", "ArrowUp"], currentSlide - 1);
-  useKeyToJump("End", totalSlides);
-  useKeyToJump("Home", 0);
+  const rightArrow = useKeyPress("ArrowRight");
+  const leftArrow = useKeyPress("ArrowLeft");
+  const upArrow = useKeyPress("ArrowUp");
+  const downArrow = useKeyPress("ArrowDown");
+  const end = useKeyPress("End");
+  const home = useKeyPress("Home");
+
+  React.useEffect(() => {
+    if (rightArrow || downArrow) paginate(1);
+  }, [downArrow, rightArrow]);
+
+  React.useEffect(() => {
+    if (leftArrow || upArrow) paginate(-1);
+  }, [leftArrow, upArrow]);
+
+  React.useEffect(() => {
+    if (end) jumpToSlide(totalSlides);
+  }, [end]);
+
+  React.useEffect(() => {
+    if (home) jumpToSlide(1);
+  }, [home]);
 
   return (
     <PaginationWrapper>

@@ -1,7 +1,6 @@
 import { motion, MotionStyle, Variants } from "framer-motion";
 import React from "react";
 
-import { useDeckState } from "@/global/DeckStateProvider";
 import { Direction } from "@/types";
 
 const variants: Variants = {
@@ -39,11 +38,12 @@ const swipePower = (offset: number, velocity: number) => {
 type Props = {
   style: MotionStyle;
   children: React.ReactNode;
+  paginate: (direction: Direction) => void;
+  direction: Direction;
   props?: unknown[];
 };
 
-const Swipe = ({ style, ...props }: Props) => {
-  const { paginate, direction } = useDeckState();
+const Swipe = ({ style, paginate, direction, ...props }: Props) => {
   return (
     <motion.main
       id="slide"

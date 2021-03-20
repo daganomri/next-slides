@@ -2,7 +2,6 @@ import { AnimatePresence, motion, Variants } from "framer-motion";
 import React from "react";
 import styled from "styled-components";
 
-import { useDeckState } from "@/global/DeckStateProvider";
 import { Direction } from "@/types";
 
 const counterVariants: Variants = {
@@ -24,8 +23,13 @@ const counterVariants: Variants = {
   },
 };
 
-const Counter = () => {
-  const { direction, currentSlide, totalSlides } = useDeckState();
+type Props = {
+  currentSlide: number;
+  direction: Direction;
+  totalSlides: number;
+};
+
+const Counter = ({ currentSlide, direction, totalSlides }: Props) => {
   return (
     <AnimatePresence exitBeforeEnter initial={false} custom={direction}>
       <CounterWrapper>

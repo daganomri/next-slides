@@ -6,7 +6,6 @@ import React from "react";
 import { MDXComponents } from "@/components";
 import Counter from "@/components/Counter";
 import Pagination from "@/components/Pagination";
-import { DeckStateProvider } from "@/global/DeckStateProvider";
 import useDeckMetadata from "@/global/useDeckMetadata";
 import useCurrentSlide from "@/hooks/useCurrentSlide";
 import Slide from "@/layout/Slide";
@@ -33,23 +32,18 @@ const Deck = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const jumpToSlide = React.useCallback(
-    (slideIndex: number) => {
-      setCurrentSlide(Math.max(Math.min(totalSlides, slideIndex), 1));
-      setDirection(
-        ((slideIndex - currentSlide) /
-          Math.abs(slideIndex - currentSlide)) as Direction
-      );
-    },
-    [currentSlide, setCurrentSlide, totalSlides]
-  );
+  const jumpToSlide = (slideIndex: number) => {
+    setDirection(
+      ((slideIndex - currentSlide) /
+        Math.abs(slideIndex - currentSlide)) as Direction
+    );
+    setCurrentSlide(slideIndex);
+  };
 
-  const paginate = React.useCallback(
-    (direction: Direction) => {
-      jumpToSlide(currentSlide + direction);
-    },
-    [currentSlide, jumpToSlide]
-  );
+  const paginate = (direction: Direction) => {
+    setDirection(direction);
+    setCurrentSlide(currentSlide + direction);
+  };
 
   const slideMetadata: SlideMetadata = slide?.scope?.data ?? {};
   const hydratedSlide = hydrate(slide, { components: MDXComponents });
@@ -64,18 +58,17 @@ const Deck = ({
           {title ? " - " + title : " #" + currentSlide}
         </title>
       </Head>
-      <DeckStateProvider
-        value={{ currentSlide, direction, totalSlides, jumpToSlide, paginate }}
-      >
-        <Slide
-          {...{
-            slide: hydratedSlide,
-            slideMetadata,
-          }}
-        />
-        <Pagination />
-        {showCounter && <Counter />}
-      </DeckStateProvider>
+      <Slide
+        {...{
+          slide: hydratedSlide,
+          slideMetadata,
+          currentSlide,
+          paginate,
+          direction,
+        }}
+      />
+      <Pagination {...{ currentSlide, totalSlides, jumpToSlide, paginate }} />
+      {showCounter && <Counter {...{ currentSlide, direction, totalSlides }} />}
     </>
   );
 };

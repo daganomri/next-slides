@@ -2,10 +2,9 @@ import { AnimatePresence, MotionStyle } from "framer-motion";
 import React from "react";
 
 import { Fader } from "@/components";
-import { useDeckState } from "@/global/DeckStateProvider";
 import useDeckMetadata from "@/global/useDeckMetadata";
 import siteConfig from "@/site.config";
-import { SlideMetadata } from "@/types";
+import { Direction, SlideMetadata } from "@/types";
 
 import Grid from "./Grid";
 import SlideAnimations from "./SlideAnimations";
@@ -15,10 +14,18 @@ const { slideAnimation: siteSlideAnimation } = siteConfig;
 type Props = {
   slideMetadata: SlideMetadata;
   slide: React.ReactNode;
+  direction: Direction;
+  currentSlide: number;
+  paginate: (direction: Direction)=>void;
 };
 
-const Slide: React.FC<Props> = ({ slideMetadata, slide }) => {
-  const { direction, currentSlide } = useDeckState();
+const Slide: React.FC<Props> = ({
+  slideMetadata,
+  slide,
+  direction,
+  currentSlide,
+  paginate
+}) => {
   const [
     deckStyle,
     slideAnimation = siteSlideAnimation ?? "swipe",
@@ -30,7 +37,9 @@ const Slide: React.FC<Props> = ({ slideMetadata, slide }) => {
   return (
     <Fader style={{ backgroundSize: "cover", ...deckStyle }}>
       <AnimatePresence initial={false} custom={direction}>
-        <SlideComponent key={currentSlide} style={(style ?? {}) as MotionStyle}>
+        <SlideComponent key={currentSlide} style={(style ?? {}) as MotionStyle}
+        {...{paginate,direction}}
+        >
           <Grid rows={rows} columns={columns}>
             {slide}
           </Grid>
