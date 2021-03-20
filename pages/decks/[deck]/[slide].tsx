@@ -3,12 +3,10 @@ import Head from "next/head";
 import hydrate from "next-mdx-remote/hydrate";
 import React from "react";
 
-import { MDXComponents } from "@/components";
-import Counter from "@/components/Counter";
-import Pagination from "@/components/Pagination";
+import { MDXComponents } from "@/global/MDXComponents";
 import useDeckMetadata from "@/global/useDeckMetadata";
 import useCurrentSlide from "@/hooks/useCurrentSlide";
-import Slide from "@/layout/Slide";
+import {Counter,Pagination,Slide} from "@/layout";
 import { getSlidePaths, getSlidesFromDeck } from "@/lib/Deck";
 import siteConfig from "@/site.config";
 import { Direction, SlideMetadata } from "@/types";

@@ -1,21 +1,7 @@
-import { motion, MotionStyle, Variants } from "framer-motion";
+import { motion, MotionStyle } from "framer-motion";
 import React from "react";
 
 import { Direction } from "@/types";
-
-const variants: Variants = {
-  enter: {
-    opacity: 0,
-  },
-  center: {
-    zIndex: 1,
-    opacity: 1,
-  },
-  exit: {
-    zIndex: 0,
-    opacity: 0,
-  },
-};
 
 /**
  * Experimenting with distilling swipe offset and velocity into a single variable, so the
@@ -36,19 +22,12 @@ type Props = {
   props?: unknown[];
 };
 
-const Fade = ({ style, paginate, direction, ...props }: Props) => {
+// eslint-disable-next-line unused-imports/no-unused-vars
+const Static = ({ style, paginate, direction, ...props }: Props) => {
   return (
     <motion.main
       id="slide"
       style={(style ?? {}) as MotionStyle}
-      custom={direction}
-      variants={variants}
-      initial="enter"
-      animate="center"
-      exit="exit"
-      transition={{
-        opacity: { duration: 0.2 },
-      }}
       drag="x"
       dragConstraints={{ left: Infinity, right: Infinity }}
       dragElastic={0}
@@ -66,4 +45,4 @@ const Fade = ({ style, paginate, direction, ...props }: Props) => {
   );
 };
 
-export default Fade;
+export default Static;

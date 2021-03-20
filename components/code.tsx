@@ -7,7 +7,7 @@ import * as themes from "react-syntax-highlighter/dist/cjs/styles/prism";
 
 type Props = { theme: keyof typeof themes } & SyntaxHighlighterProps;
 
-const CodeBlock: React.FC<Props> = ({
+export const code: React.FC<Props> = ({
   className,
   theme = "dracula",
   children,
@@ -25,5 +25,3 @@ const CodeBlock: React.FC<Props> = ({
     </SyntaxHighlighter>
   );
 };
-
-export default CodeBlock;

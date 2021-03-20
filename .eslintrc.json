@@ -43,5 +43,15 @@
         "argsIgnorePattern": "^_"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["components/**/*"],
+      "extends": ["plugin:import/errors"],
+      "rules": {
+        "import/no-default-export": 2,
+        "import/no-unresolved": 0
+      }
+    }
+  ]
 }

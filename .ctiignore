@@ -1,0 +1,11 @@
+styles/**/*
+public/**/*
+pages/**/*
+node_modules/**/*
+lib/**/*
+layout/**/*
+hooks/**/*
+global/**/*
+decks/**/*
+types.ts
+site.config.ts

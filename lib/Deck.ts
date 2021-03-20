@@ -3,8 +3,8 @@ import matter from "gray-matter";
 import renderToString from "next-mdx-remote/render-to-string";
 import path from "path";
 
-import { MDXComponents } from "../components";
-import { DeckMetadata, SlideMetadata } from "../types";
+import { MDXComponents } from "@/global/MDXComponents";
+import { DeckMetadata, SlideMetadata } from "@/types";
 
 export const getDeckPaths = () => {
   const postsDirectory = path.join(process.cwd(), "decks");
