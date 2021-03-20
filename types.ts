@@ -29,7 +29,7 @@ export type SlideMetadata = Readonly<
   }>
 >;
 
-type SlideAnimation = "swipe" | "fade";
+type SlideAnimation = "swipe" | "fade" | "static";
 
 export type DeckMetadata = Partial<{
   title: string;

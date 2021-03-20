@@ -6,6 +6,7 @@
     "dev": "next dev",
     "predev": "npx ctix create ./tsconfig.json",
     "prebuild": "npx ctix create ./tsconfig.json",
+    "preprod": "npx ctix create ./tsconfig.json",
     "build": "next build",
     "start": "next start",
     "prod": "next build && next start"
