@@ -6,7 +6,7 @@ import React from "react";
 import { MDXComponents } from "@/global/MDXComponents";
 import useDeckMetadata from "@/global/useDeckMetadata";
 import useCurrentSlide from "@/hooks/useCurrentSlide";
-import {Counter,Pagination,Slide} from "@/layout";
+import { Counter, Pagination, Slide } from "@/layout";
 import { getSlidePaths, getSlidesFromDeck } from "@/lib/Deck";
 import siteConfig from "@/site.config";
 import { Direction, SlideMetadata } from "@/types";

@@ -8,7 +8,7 @@ import { Direction, SlideMetadata } from "@/types";
 
 import SlideAnimations from "./SlideAnimations";
 
-const { slideAnimation: siteSlideAnimation } = siteConfig;
+const { slideAnimation: siteSlideAnimation, drag: siteDrag } = siteConfig;
 
 type Props = {
   slideMetadata: SlideMetadata;
@@ -28,7 +28,12 @@ const Slide: React.FC<Props> = ({
   const [
     deckStyle,
     slideAnimation = siteSlideAnimation ?? "swipe",
-  ] = useDeckMetadata((state) => [state.style, state.slideAnimation]);
+    drag,
+  ] = useDeckMetadata((state) => [
+    state.style,
+    state.slideAnimation,
+    state.drag,
+  ]);
 
   const { rows, columns, style } = slideMetadata;
   const SlideComponent = SlideAnimations[slideAnimation];
@@ -38,6 +43,7 @@ const Slide: React.FC<Props> = ({
       <AnimatePresence initial={false} custom={direction}>
         <SlideComponent
           key={currentSlide}
+          drag={(drag??siteDrag)??true}
           style={(style ?? {}) as MotionStyle}
           {...{ paginate, direction }}
         >

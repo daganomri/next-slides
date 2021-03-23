@@ -41,14 +41,25 @@ export const getSlidePaths = () => {
   return paths;
 };
 
+const COMMENT_REGEX = /<!--.*{(.*)}.*-->/;
+
 export const getSlidesFromDeck = async (deckName: string) => {
   const filename = path.join("decks", `${deckName}.mdx`);
   const deck = fs.readFileSync(filename, "utf-8");
   const { content: deckContent, data: deckMetadata } = matter(deck);
   const slides = deckContent.split("---\n");
   const renderedSlides = slides.map(async (slide) => {
+    const newSlide = slide
+      .split("\n")
+      .map((line) => {
+        if (!line.match(COMMENT_REGEX)) return line;
+        const strippedLine = line.split(COMMENT_REGEX)[0];
+        const cssRules = line.match(COMMENT_REGEX)[1];
+        return `<div style={{${cssRules}, display: 'inline-block'}}>\n\n${strippedLine}\n\n</div>`;
+      })
+      .join("\n");
     const { content, data }: { content: string; data: SlideMetadata } = matter(
-      slide.trim(),
+      newSlide.trim(),
       {
         delimiters: "///",
       }

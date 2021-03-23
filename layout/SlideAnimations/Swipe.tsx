@@ -40,10 +40,11 @@ type Props = {
   children: React.ReactNode;
   paginate: (direction: Direction) => void;
   direction: Direction;
+  drag: boolean;
   props?: unknown[];
 };
 
-const Swipe = ({ style, paginate, direction, ...props }: Props) => {
+const Swipe = ({ style, paginate, direction, drag, ...props }: Props) => {
   return (
     <motion.main
       id="slide"
@@ -57,7 +58,7 @@ const Swipe = ({ style, paginate, direction, ...props }: Props) => {
         x: { type: "spring", stiffness: 300, damping: 30 },
         opacity: { duration: 0.2 },
       }}
-      drag="x"
+      drag={drag ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
       dragElastic={1}
       onDragEnd={(e, { offset, velocity }) => {

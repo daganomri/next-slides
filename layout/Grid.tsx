@@ -23,9 +23,9 @@ const InnerWrapper = styled.div`
   max-height: 100%;
 `;
 
-const Grid = ({ rows = 1, columns = 1, children }: Props) => {
+const Grid = ({ rows = 1, columns = 1, children, ...props }: Props) => {
   return (
-    <GridWrapper $rows={rows} $columns={columns}>
+    <GridWrapper $rows={rows} $columns={columns} {...props}>
       {rows === 1 && columns === 1 ? (
         <InnerWrapper>{children}</InnerWrapper>
       ) : (

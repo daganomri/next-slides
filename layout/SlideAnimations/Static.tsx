@@ -19,16 +19,17 @@ type Props = {
   children: React.ReactNode;
   paginate: (direction: Direction) => void;
   direction: Direction;
+  drag: boolean;
   props?: unknown[];
 };
 
 // eslint-disable-next-line unused-imports/no-unused-vars
-const Static = ({ style, paginate, direction, ...props }: Props) => {
+const Static = ({ style, paginate, direction, drag, ...props }: Props) => {
   return (
     <motion.main
       id="slide"
       style={(style ?? {}) as MotionStyle}
-      drag="x"
+      drag={drag ? "x" : false}
       dragConstraints={{ left: Infinity, right: Infinity }}
       dragElastic={0}
       onDragEnd={(e, { offset, velocity }) => {

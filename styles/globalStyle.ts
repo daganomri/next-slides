@@ -182,6 +182,10 @@ const GlobalStyle = createGlobalStyle`
     margin-bottom: 0.5rem;
   }
 
+  h3,h4,h5,h6 {
+    margin-bottom: 0;
+  }
+
   p {
     margin-top: 1rem;
     margin-bottom: 1rem;

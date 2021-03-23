@@ -1,0 +1,303 @@
+---
+title: Framer Motion Presentation
+date: 24/03/2021
+---
+
+# Framer-Motion
+
+## What is it and what can you do with it?
+
+<video width="auto" style={{ maxWidth: "80%" }} loop autoPlay muted>
+  <source src="/framer-motion-cover.mp4" type="video/mp4" />
+</video>
+
+---
+
+# React Animation Library
+
+##### Other animation libraries for react:
+
+<StaggeredUl>
+  <StaggeredLi>React Spring</StaggeredLi>
+  <StaggeredLi>React Transition Group</StaggeredLi>
+  <StaggeredLi>React Motion</StaggeredLi>
+</StaggeredUl>
+
+---
+
+# Animations Framer-Motion can do:
+
+<StaggeredUl
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(2,1fr)",
+    gap: 20,
+    width: "40%",
+  }}
+>
+  <StaggeredLi>Simple Animations</StaggeredLi>
+  <StaggeredLi>Keyframe Animations</StaggeredLi>
+  <StaggeredLi>Variant Animations</StaggeredLi>
+  <StaggeredLi>Gesture Animations</StaggeredLi>
+  <StaggeredLi>Drag Animations</StaggeredLi>
+  <StaggeredLi>Exit Animations</StaggeredLi>
+  <StaggeredLi>Shared Layout Animations</StaggeredLi>
+  <StaggeredLi>And more...</StaggeredLi>
+</StaggeredUl>
+
+---
+
+# Basic Syntax
+
+```tsx
+<motion.div initial={{}} animate={{}} transition={{}} />
+```
+
+<StaggeredUl
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(2,1fr)",
+    gap: 20,
+    width: "30%",
+  }}
+>
+  <StaggeredLi>scale</StaggeredLi>
+  <StaggeredLi>rotate</StaggeredLi>
+  <StaggeredLi>opacity</StaggeredLi>
+  <StaggeredLi>color</StaggeredLi>
+  <StaggeredLi>x position</StaggeredLi>
+  <StaggeredLi>y position</StaggeredLi>
+  <StaggeredLi>duration</StaggeredLi>
+  <StaggeredLi>ease</StaggeredLi>
+</StaggeredUl>
+
+---
+
+# Simple Animations
+
+```tsx
+<motion.div animate={{ scale: 2 }} />
+```
+
+<MotionBackground>
+  <MotionBox
+    animate={{ scale: 2 }}
+    transition={{ duration: 2, repeat: Infinity }}
+  />
+</MotionBackground>
+
+---
+
+# Keyframe Animations
+
+<Grid columns={2} style={{gap:50}}>
+
+```tsx showLineNumbers
+<motion.div
+  animate={{
+    scale: [1, 2, 2, 1, 1],
+    rotate: [0, 0, 270, 270, 0],
+    borderRadius: ["20%", "20%", "50%", "50%", "20%"],
+  }}
+  transition={{
+    duration: 2,
+    times: [0, 0.2, 0.5, 0.8, 1],
+    loop: Infinity,
+  }}
+/>
+```
+
+<MotionBackground>
+  <MotionBox
+    animate={{
+      scale: [1, 2, 2, 1, 1],
+      rotate: [0, 0, 270, 270, 0],
+      borderRadius: ["20%", "20%", "50%", "50%", "20%"],
+    }}
+    transition={{
+      duration: 2,
+      ease: "easeInOut",
+      times: [0, 0.2, 0.5, 0.8, 1],
+      loop: Infinity,
+      repeatDelay: 1,
+    }}
+  />
+</MotionBackground>
+
+</Grid>
+
+---
+
+# Variant Animations
+
+<Grid columns={2} style={{gap:20}}>
+
+```tsx showLineNumbers highlightLines=3,13,15
+const listVariants = {
+  hidden: {...},
+  show: { transition: { staggerChildren: 0.1 } },
+};
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0 },
+};
+
+const items = ["React Spring", "React Transition Group", "React Motion"];
+
+return (
+  <motion.ul variants={listVariants} initial="hidden" animate="show">
+    {items.map((item) => (
+      <motion.li key={item} variants={itemVariants}>
+        {item}
+      </motion.li>
+    ))}
+  </motion.ul>
+);
+```
+
+<MotionBackground style={{ padding: "6rem 3rem" }}>
+  <StaggeredUl>
+    <StaggeredLi>React Spring</StaggeredLi>
+    <StaggeredLi>React Transition Group</StaggeredLi>
+    <StaggeredLi>React Motion</StaggeredLi>
+  </StaggeredUl>
+</MotionBackground>
+
+</Grid>
+
+---
+
+# Gesture Animations
+
+```tsx
+<motion.div whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }} />
+```
+
+<MotionBackground>
+  <MotionBox whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }} />
+</MotionBackground>
+
+---
+
+# Drag Animations
+
+<Grid columns={2} style={{gap:20}}>
+
+```tsx showLineNumbers
+<motion.div
+  drag
+  dragConstraints={{
+    top: -50,
+    left: -50,
+    right: 50,
+    bottom: 50,
+  }}
+/>
+```
+
+<MotionBackground style={{ width: "100%" }}>
+  <MotionDragExample />
+</MotionBackground>
+
+</Grid>
+
+---
+
+# Exit Animations
+
+<Grid columns={2} style={{gap:20}}>
+
+```tsx showLineNumbers
+<AnimatePresence>
+  {show && (
+    <motion.div
+      initial={{ scale: 0 }}
+      animate={{ scale: 1 }}
+      exit={{ scale: [1, 1.2, 0], transition: { duration: 0.5 } }}
+      transition={{ type: "spring" }}
+    />
+  )}
+</AnimatePresence>
+```
+
+<MotionBackground>
+  <MotionExitDemo />
+</MotionBackground>
+
+</Grid>
+
+---
+
+# Shared Layout Animations
+
+<Grid columns={2} style={{gap:20}}>
+
+```tsx showLineNumbers
+// Wrapper
+const [selected, setSelected] = React.useState(colors[0]);
+
+<AnimateSharedLayout>
+  <ul>
+    {colors.map((color) => (
+      <Item
+        key={color}
+        color={color}
+        isSelected={selected === color}
+        onClick={() => setSelected(color)}
+      />))}
+  </ul>
+</AnimateSharedLayout>
+
+// Item
+<li onClick={onClick} style={{ backgroundColor: color }}>
+  {isSelected && (
+    <motion.div
+      layoutId="outline"
+      initial={false}
+      animate={{ borderColor: color }}
+      transition={spring}
+    />)}
+</li>
+```
+
+<MotionBackground style={{ width: "100%" }}>
+  <MotionLayoutDemo />
+</MotionBackground>
+
+</Grid>
+
+---
+
+# Motion Values
+
+<video width="auto" style={{ maxWidth: "60%" }} loop autoPlay muted>
+  <source src="/motionValues.mp4" type="video/mp4" />
+</video>
+
+---
+
+# Page Transition
+
+<img src="/page_transition.gif" style={{ width: "60%" }} />
+
+---
+
+# Things we didn't cover in this talk:
+
+<StaggeredUl
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(2,1fr)",
+    gap: 20,
+    width: "50%",
+  }}
+>
+  <StaggeredLi>Component animation controls</StaggeredLi>
+  <StaggeredLi>Easings</StaggeredLi>
+  <StaggeredLi>Layout animations</StaggeredLi>
+  <StaggeredLi>Gesture event callbacks</StaggeredLi>
+  <StaggeredLi>Framer-Motion Utilities</StaggeredLi>
+  <StaggeredLi>LazyMotion component</StaggeredLi>
+  <StaggeredLi>Scroll Animations</StaggeredLi>
+  <StaggeredLi>And many more...</StaggeredLi>
+</StaggeredUl>

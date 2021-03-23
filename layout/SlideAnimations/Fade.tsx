@@ -33,10 +33,11 @@ type Props = {
   children: React.ReactNode;
   paginate: (direction: Direction) => void;
   direction: Direction;
+  drag: boolean;
   props?: unknown[];
 };
 
-const Fade = ({ style, paginate, direction, ...props }: Props) => {
+const Fade = ({ style, paginate, direction, drag, ...props }: Props) => {
   return (
     <motion.main
       id="slide"
@@ -49,7 +50,7 @@ const Fade = ({ style, paginate, direction, ...props }: Props) => {
       transition={{
         opacity: { duration: 0.2 },
       }}
-      drag="x"
+      drag={drag ? "x" : false}
       dragConstraints={{ left: Infinity, right: Infinity }}
       dragElastic={0}
       onDragEnd={(e, { offset, velocity }) => {

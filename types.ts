@@ -37,6 +37,7 @@ export type DeckMetadata = Partial<{
   showCounter: boolean;
   date: string;
   slideAnimation: SlideAnimation;
+  drag: boolean;
 }>;
 
 export type Direction = 1 | -1;
@@ -58,5 +59,6 @@ export type SiteConfig = Readonly<
     };
     slideAnimation: SlideAnimation;
     cssVariables: SiteCSSVariables;
+    drag: boolean;
   }>
 >;

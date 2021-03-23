@@ -6,6 +6,7 @@ const siteConfig: SiteConfig = {
   author: {
     twitter_url: `https://twitter.com/daganomri`,
   },
+  drag: false,
 } as const;
 
 export default siteConfig;
